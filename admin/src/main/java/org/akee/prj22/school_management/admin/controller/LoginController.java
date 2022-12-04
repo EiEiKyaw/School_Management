@@ -20,9 +20,6 @@ public class LoginController {
 	@Autowired
 	private AdminUserServiceImpl userService;
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-
 	@GetMapping("/")
 	public String rootForm(Model model) {
 		model.addAttribute("title", "Sign In");
@@ -46,7 +43,7 @@ public class LoginController {
 	@PostMapping("/do-signin")
 	public String doSignin(@Valid @ModelAttribute("userDto") AdminUserDto userDto, Model model) {
 		AdminUser user = userService.findByUserName(userDto.getUserName());
-		if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+		if (!new BCryptPasswordEncoder().matches(userDto.getPassword(), user.getPassword())) {
 			model.addAttribute("userDto", userDto);
 			model.addAttribute("error", "Invalid username or password!");
 			return "redirect:/signin?error";
