@@ -1,0 +1,127 @@
+@@ -0,0 +1,125 @@
+<!DOCTYPE html>
+<html
+	lang="en"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body id="page-top">
+	<div id="wrapper">
+		<ul th:replace="~{fragments :: sidebar}"></ul>
+		<div
+			id="content-wrapper"
+			class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="~{fragments :: topbar}"></nav>
+				<div class="container-fluid">
+					<div th:replace="~{fragments :: heading}"></div>
+					<div class="row">
+						<div class="col-xl-12 col-lg-12">
+							<div
+								th:if="${message}"
+								class="text-center alert alert-success">
+								<label th:text="${message}"></label>
+							</div>
+							<div
+								th:if="${failed}"
+								class="text-center alert alert-danger">
+								<label th:text="${failed}"></label>
+							</div>
+							<div class="card shadow mb-4">
+								<div class="card-body">
+									<div class="row mb-3">
+										<label
+											class="col-6"
+											th:if="${size == 0}">No Course Type.</label>
+										<label
+											class="col-6"
+											th:if="${size > 0}"></label>
+										<div class="col-6 text-right">
+											<button
+												type="button"
+												class="btn btn-primary"
+												data-toggle="modal"
+												data-target="#exampleModal">Add</button>
+										</div>
+									</div>
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th scope="col">#</th>
+												<th scope="col">Name</th>
+												<th scope="col">Status</th>
+											</tr>
+										</thead>
+										<tbody th:if="${size>0}">
+											<tr th:each="cat : ${coursetypes}">
+												<th
+													scope="row"
+													th:text="${catStat.index + 1}"></th>
+												<td th:text="${cat.name}"></td>
+												<td th:text="${cat.is_activated}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer th:replace="~{fragments :: footer}"> </footer>
+		</div>
+	</div>
+	<a th:replace="~{fragments :: scroll}"> </a>
+	<div
+		class="modal fade"
+		id="exampleModal"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<form
+			th:action="@{/add-coursetype}"
+			method="post"
+			th:object="${coursetype}">
+			<div
+				class="modal-dialog"
+				role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5
+							class="modal-title"
+							id="exampleModalLabel">New Course Type</h5>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label
+								for="recipient-name"
+								class="col-form-label">Name:</label>
+							<input
+								type="text"
+								class="form-control"
+								th:field="*{name}"
+								required
+								id="recipient-name">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button
+							type="submit"
+							class="btn btn-primary">Save</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:replace="~{fragments :: logoutModal}"></div>
+	<div th:replace="~{fragments :: script}"></div>
+	<script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+	<script th:src="@{js/demo/chart-area-demo.js}"></script>
+	<script th:src="@{js/demo/chart-pie-demo.js}"></script>
+</body>
+</html>

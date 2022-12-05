@@ -2,7 +2,7 @@
 <html
 	lang="en"
 	xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: header">
+<head th:replace="~{fragments :: header}">
 </head>
 <body class="bg-gradient-primary">
 	<div class="container">
@@ -37,6 +37,7 @@
 											type="text"
 											class="form-control form-control-user"
 											id="exampleFirstName"
+											required
 											th:field="*{firstName}"
 											placeholder="First Name">
 									</div>
@@ -45,6 +46,7 @@
 											type="text"
 											class="form-control form-control-user"
 											id="exampleLastName"
+											required
 											th:field="*{lastName}"
 											placeholder="Last Name">
 									</div>
@@ -54,6 +56,7 @@
 										type="text"
 										class="form-control form-control-user"
 										id="exampleInputEmail"
+										required
 										th:field="*{userName}"
 										placeholder="Username">
 								</div>
@@ -63,6 +66,7 @@
 											type="password"
 											class="form-control form-control-user"
 											id="exampleInputPassword"
+											required
 											th:field="*{password}"
 											placeholder="Password">
 									</div>
@@ -71,6 +75,7 @@
 											type="password"
 											class="form-control form-control-user"
 											id="exampleRepeatPassword"
+											required
 											th:field="*{repeatPassword}"
 											placeholder="Repeat Password">
 									</div>
@@ -101,6 +106,6 @@
 			</div>
 		</div>
 	</div>
-	<div th:replace="fragments::script"></div>
+	<div th:replace="~{fragments :: script}"></div>
 </body>
 </html>

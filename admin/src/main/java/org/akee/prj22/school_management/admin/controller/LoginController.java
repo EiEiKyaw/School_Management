@@ -4,6 +4,9 @@ import org.akee.prj22.school_management.library.dto.AdminUserDto;
 import org.akee.prj22.school_management.library.model.AdminUser;
 import org.akee.prj22.school_management.library.service.impl.AdminUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,11 @@ public class LoginController {
 
 	@GetMapping("/index")
 	public String home(Model model) {
-		model.addAttribute("title", "Home");
+		model.addAttribute("title", "Dashboard");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+			return "redirect:/signin";
+		}
 		return "index";
 	}
 
@@ -42,11 +49,13 @@ public class LoginController {
 
 	@PostMapping("/do-signin")
 	public String doSignin(@Valid @ModelAttribute("userDto") AdminUserDto userDto, Model model) {
-		AdminUser user = userService.findByUserName(userDto.getUserName());
-		if (!new BCryptPasswordEncoder().matches(userDto.getPassword(), user.getPassword())) {
-			model.addAttribute("userDto", userDto);
-			model.addAttribute("error", "Invalid username or password!");
-			return "redirect:/signin?error";
+		if (userDto != null) {
+			AdminUser user = userService.findByUserName(userDto.getUserName());
+			if (!new BCryptPasswordEncoder().matches(userDto.getPassword(), user.getPassword())) {
+				model.addAttribute("userDto", userDto);
+				model.addAttribute("error", "Invalid username or password!");
+				return "redirect:/signin?error";
+			}
 		}
 		return "redirect:/index";
 	}
